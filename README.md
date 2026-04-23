@@ -8,6 +8,13 @@
 * **Επιθεώρηση & Φιλτράρισμα (ΠΧ3)**: Προβολή ιστορικού με εξελιγμένα χρονικά φίλτρα (Σήμερα, Χθες, Εβδομάδα, Μήνας, Έτος) και χρήση **SQL JOINs** για τη σύνδεση εξόδων με τις κατηγορίες τους.
 * **Ανάλυση Εξόδων (ΠΧ4)**: Οπτικοποίηση των συνολικών εξόδων ανά κατηγορία με δυναμικές μπάρες προόδου για γρήγορη οικονομική εποπτεία.
 
+<img width="1080" height="2340" alt="Screenshot_20260423_231524" src="https://github.com/user-attachments/assets/da09f806-9e45-4681-b75f-4f09aa41d298" />
+<img width="1080" height="2340" alt="Screenshot_20260423_231545" src="https://github.com/user-attachments/assets/0d9a863a-23cb-44ce-9367-ffa16cf0bed8" />
+<img width="1080" height="2340" alt="Screenshot_20260423_231551" src="https://github.com/user-attachments/assets/c2c75f17-cd6d-47e4-946f-0c8243122290" />
+<img width="1080" height="2340" alt="Screenshot_20260423_231556" src="https://github.com/user-attachments/assets/6f791f77-26e2-4816-99b2-5bd1ffb7c39e" />
+<img width="1080" height="2340" alt="Screenshot_20260423_231606" src="https://github.com/user-attachments/assets/48f34083-ebd6-422c-add3-cfd3f1cb8b8a" />
+<img width="1080" height="2340" alt="Screenshot_20260423_231616" src="https://github.com/user-attachments/assets/a5efdca7-a5ef-4a4f-9125-f2e932828fb5" />
+
 ## 🛠 Τεχνικά Χαρακτηριστικά
 * **Τοπική Βάση Δεδομένων**: Χρήση της βιβλιοθήκης `sqflite` για μόνιμη αποθήκευση.
 * **Ασφάλεια Δεδομένων**: Υλοποίηση **Database Transactions** (Atomicity) για την ταυτόχρονη διαγραφή κατηγοριών και των σχετικών τους εξόδων, διασφαλίζοντας την ακεραιότητα της βάσης.
