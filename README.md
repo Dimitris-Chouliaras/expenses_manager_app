@@ -1,17 +1,23 @@
-# ergasia_eksaminou
+# 📱 Expense Manager - Flutter & SQLite
 
-A new Flutter project.
+Μια ολοκληρωμένη εφαρμογή διαχείρισης προσωπικών εξόδων αναπτυγμένη με το framework **Flutter**. Το project εστιάζει στην ορθή διαχείριση τοπικών βάσεων δεδομένων, τη χρήση γεωγραφικών δεδομένων και την παροχή μιας σύγχρονης εμπειρίας χρήστη (UX).
 
-## Getting Started
+## 🚀 Κύριες Λειτουργίες (Use Cases)
+* **Διαχείριση Κατηγοριών (ΠΧ1)**: Πλήρες σύστημα προσθήκης, επεξεργασίας και διαγραφής κατηγοριών με υποστήριξη **Drag & Drop** για την αναδιάταξη της σειράς εμφάνισης.
+* **Καταγραφή Εξόδων (ΠΧ2)**: Δυναμική φόρμα εισαγωγής εξόδων με αυτόματη καταγραφή ημερομηνίας/ώρας και λήψη γεωγραφικών συντεταγμένων (**GPS**) μέσω του `geolocator`.
+* **Επιθεώρηση & Φιλτράρισμα (ΠΧ3)**: Προβολή ιστορικού με εξελιγμένα χρονικά φίλτρα (Σήμερα, Χθες, Εβδομάδα, Μήνας, Έτος) και χρήση **SQL JOINs** για τη σύνδεση εξόδων με τις κατηγορίες τους.
+* **Ανάλυση Εξόδων (ΠΧ4)**: Οπτικοποίηση των συνολικών εξόδων ανά κατηγορία με δυναμικές μπάρες προόδου για γρήγορη οικονομική εποπτεία.
 
-This project is a starting point for a Flutter application.
+## 🛠 Τεχνικά Χαρακτηριστικά
+* **Τοπική Βάση Δεδομένων**: Χρήση της βιβλιοθήκης `sqflite` για μόνιμη αποθήκευση.
+* **Ασφάλεια Δεδομένων**: Υλοποίηση **Database Transactions** (Atomicity) για την ταυτόχρονη διαγραφή κατηγοριών και των σχετικών τους εξόδων, διασφαλίζοντας την ακεραιότητα της βάσης.
+* **UI/UX**: 
+    * Πλήρης υποστήριξη **Dark Mode** & **Light Mode** (System Theme).
+    * Responsive σχεδιασμός για κινητά και desktop (ffi support).
+    * Αυτόματη κεφαλαιοποίηση (Text Capitalization) σε όλα τα πεδία εισαγωγής.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📦 Εγκατάσταση
+1. Βεβαιωθείτε ότι έχετε εγκαταστήσει το [Flutter SDK](https://docs.flutter.dev/get-started/install).
+2. Κλωνοποιήστε το repository: `git clone https://github.com/ΤΟ_USERNAME_ΣΟΥ/expenses_manager_app.git`
+3. Εκτελέστε την εντολή: `flutter pub get`
+4. Τρέξτε την εφαρμογή: `flutter run`
