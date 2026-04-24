@@ -83,9 +83,13 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
             trailing: const Icon(Icons.calendar_today),
             onTap: () => _selectDate(context, false),
           ),
-          ElevatedButton( // Κουμπί ανάλυσης
+          ElevatedButton.icon( // Κουμπί υποβολής της φόρμας.
             onPressed: _runAnalysis,
-            child: const Text('Εκτέλεση Ανάλυσης'),
+            icon: const Icon(Icons.auto_graph),
+            label: const Text('Εκτέλεση Ανάλυσης'),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue.shade800, // Χρώμα κουμπιού.
+                foregroundColor: Colors.white), // Χρώμα κειμένου.
           ),
           const Divider(),
 
@@ -93,9 +97,9 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
           if (_grandTotal > 0)
             Card(
               color: Colors.blue.shade50,
-              margin: const EdgeInsets.all(16),
+              margin: const EdgeInsets.all(12),
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

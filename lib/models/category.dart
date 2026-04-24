@@ -14,7 +14,7 @@ class Category {
     this.position = 0, // Προεπιλεγμένη τιμή στον constructor
   });
 
-  // Factory Constructor fromMap: Δημιουργεί ένα αντικείμενο Category από ένα Map (Μετατρέπει τα δεδομένα από τη βάση πίσω σε αντικείμενο Dart).
+  // Μέθοδος fromMap: Μετατρέπει τα δεδομένα από τη βάση πίσω σε αντικείμενο Dart.
   // Η SQLite επιστρέφει τα δεδομένα σε μορφή Map (σαν λεξικό). Αυτή η μέθοδος ανακτά τα δεδομένα από το Map της βάσης και δημιουργεί ένα αντικείμενο Category.
   factory Category.fromMap(Map<String, dynamic> map) {
     return Category(

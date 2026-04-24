@@ -49,8 +49,19 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Ακύρωση')),
+          TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.red, // Αλλάζει το χρώμα του κειμένου σε κόκκινο
+              backgroundColor: Colors.red.withOpacity(0.1),
+            ),
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Ακύρωση'),
+          ),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue, // Το χρώμα που θέλεις για το background
+              foregroundColor: Colors.white, // Το χρώμα του κειμένου
+            ),
             onPressed: () async { // Ενημέρωση του αντικειμένου Dart με τις νέες τιμές από τα πεδία.
               category.title = titleController.text;
               category.description = descController.text;

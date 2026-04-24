@@ -81,13 +81,13 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
               decoration: const InputDecoration(labelText: 'Πλήρης Περιγραφή (Προαιρετικά)',border: OutlineInputBorder(),), // Προσθήκη πλαισίου για καλύτερη εμφάνιση.
             ),
             const SizedBox(height: 24),
-            ElevatedButton( // Κουμπί υποβολής της φόρμας.
+            ElevatedButton.icon( // Κουμπί υποβολής της φόρμας.
               onPressed: _saveCategory,
+              icon: const Icon(Icons.save),
+              label: const Text('Αποθήκευση Κατηγορίας'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue.shade800, // Χρώμα κουμπιού.
-                foregroundColor: Colors.white, // Χρώμα κειμένου.
-              ),
-              child: const Text('Αποθήκευση Κατηγορίας'),
+                foregroundColor: Colors.white), // Χρώμα κειμένου.
             ),
           ],
         ),

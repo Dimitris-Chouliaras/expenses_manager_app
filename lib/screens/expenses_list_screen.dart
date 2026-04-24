@@ -87,7 +87,7 @@ class _ExpensesListScreenState extends State<ExpensesListScreen> {
                       children: [
                         // Κουμπί Πληροφοριών: Εμφανίζει dialog με τις σημειώσεις και τις συντεταγμένες GPS.
                         IconButton(
-                          icon: const Icon(Icons.info_outline, color: Colors.blueAccent), // Άλλαξα το εικονίδιο σε info
+                          icon: const Icon(Icons.info_outline, color: Colors.grey), // Άλλαξα το εικονίδιο σε info
                           onPressed: () {
                             showDialog(
                               context: context,
@@ -149,7 +149,7 @@ class _ExpensesListScreenState extends State<ExpensesListScreen> {
                         ),
                         // Κουμπί Επεξεργασίας: Στέλνει τον χρήστη πίσω στη φόρμα καταγραφής με τα δεδομένα του εξόδου.
                         IconButton(
-                          icon: const Icon(Icons.edit, color: Colors.orange),
+                          icon: const Icon(Icons.edit, color: Colors.blue),
                           onPressed: () async {
                             await Navigator.push(
                               context,
@@ -162,7 +162,7 @@ class _ExpensesListScreenState extends State<ExpensesListScreen> {
                         ),
                         // Κουμπί διαγραφής: Αφαιρεί οριστικά το έξοδο από τη βάση δεδομένων.
                         IconButton(
-                          icon: const Icon(Icons.delete, color: Colors.grey),
+                          icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () async {
                             await DatabaseHelper.instance.deleteExpense(expense.id!);
                             _refreshExpenses(); // Αφαίρεση από τη λίστα στο UI.

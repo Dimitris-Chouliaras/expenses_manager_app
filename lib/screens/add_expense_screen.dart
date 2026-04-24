@@ -19,7 +19,7 @@ class AddExpenseScreen extends StatefulWidget {
 class _AddExpenseScreenState extends State<AddExpenseScreen> {
   // Controllers για την ανάκτηση δεδομένων από τα πεδία εισαγωγής.
   final _amountController = TextEditingController();
-  final TextEditingController _detailsController = TextEditingController();
+  final _detailsController = TextEditingController();
   final _descController = TextEditingController();
   final _locNameController = TextEditingController();
 
@@ -114,7 +114,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     });
                   }
                 } else {
-                  // Αν ο τίτλος είναι άδειος, δείχνουμε μια ειδοποίηση [cite: 323, 324]
+                  // Αν ο τίτλος είναι άδειος, δείχνουμε μια ειδοποίηση
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Ο τίτλος είναι υποχρεωτικός!')),
                   );
@@ -154,7 +154,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
   // Κύρια συνάρτηση αποθήκευσης του εξόδου (ΠΧ2).
   void _saveExpense() async {
-    final amountText = _amountController.text;
+    final amountText = _amountController.text; // Εδώ διαβάζουμε το ποσό
 
     // Έλεγχος υποχρεωτικών πεδίων βάσει απαιτήσεων (Ποσό & Κατηγορία).
     if (amountText.isEmpty || _selectedCategoryId == null) {
@@ -181,15 +181,16 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
         lng = 22.4191;
       }
 
+      // Δημιουργία του αντικείμενου expenseData
       final expenseData = Expense(
         id: widget.expenseToEdit?.id, // Κρατάει το παλιό ID αν είναι edit
         amount: double.parse(amountText),
         timestamp: widget.expenseToEdit?.timestamp ?? DateTime.now(),
-        details: _detailsController.text,
+        details: _detailsController.text, // Διαβάζουμε κατευθείαν τις λεπτομέρειες
         categoryId: _selectedCategoryId!,
         latitude: lat,
         longitude: lng,
-        locationName: _locNameController.text,
+        locationName: _locNameController.text, // Διαβάζουμε κατευθείαν την τοποθεσία
       );
 
       // Επιλογή αν θα γίνει εισαγωγή (νέο) ή ενημέρωση (edit).
