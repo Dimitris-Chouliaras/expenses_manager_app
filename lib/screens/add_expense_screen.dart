@@ -114,7 +114,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     });
                   }
                 } else {
-                  // Αν ο τίτλος είναι άδειος, δείχνουμε μια ειδοποίηση [cite: 323, 324]
+                  // Αν ο τίτλος είναι άδειος, δείχνουμε μια ειδοποίηση
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Ο τίτλος είναι υποχρεωτικός!')),
                   );
