@@ -6,6 +6,7 @@ import 'screens/add_category_screen.dart'; // Εισαγωγή της οθόνη
 import 'screens/add_expense_screen.dart'; // Εισαγωγή της οθόνης προσθήκης για τη λειτουργία της επεξεργασίας (Edit).
 import 'screens/expenses_list_screen.dart'; // Εισαγωγή της οθόνης εμφάνισης των εξόδων.
 import 'screens/analysis_screen.dart'; // Εισαγωγή της οθόνης ανάλυσης των εξόδων.
+import 'database/database_helper.dart';
 
 // Η συνάρτηση main είναι το σημείο εκκίνησης της εφαρμογής(Entry Point).
 void main() {
@@ -55,9 +56,46 @@ class MyExpenseApp extends StatelessWidget {
   }
 }
 
-// Η αρχική οθόνη που περιλαμβάνει το κεντρικό μενού πλοήγησης (Drawer).
-class MainHomeScreen extends StatelessWidget {
+class MainHomeScreen extends StatefulWidget {
   const MainHomeScreen({super.key});
+
+  @override
+  State<MainHomeScreen> createState() => _MainHomeScreenState();
+}
+
+// Η αρχική οθόνη που περιλαμβάνει το κεντρικό μενού πλοήγησης (Drawer).
+class _MainHomeScreenState extends State<MainHomeScreen> {
+  double _todayTotal = 0.0;
+  int _todayCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTodayStats(); // Φόρτωση στατιστικών με το που ανοίγει η εφαρμογή
+  }
+
+  // Συνάρτηση για τον υπολογισμό των σημερινών εξόδων
+  Future<void> _loadTodayStats() async {
+    final db = DatabaseHelper.instance;
+    final allExpenses = await db.getAllExpenses();
+
+    // Παίρνουμε τη σημερινή ημερομηνία σε μορφή String (YYYY-MM-DD)
+    String today = DateTime.now().toString().split(' ')[0];
+
+    double total = 0;
+    int count = 0;
+
+    for (var exp in allExpenses) {
+      if (exp.timestamp.toString().split(' ')[0] == today) {
+        total += exp.amount;
+        count++;
+      }
+    }
+    setState(() {
+      _todayTotal = total;
+      _todayCount = count;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +104,13 @@ class MainHomeScreen extends StatelessWidget {
         title: const Text('Expense Manager'),
         centerTitle: true,
         elevation: 4,
+         /* actions: [
+          // Κουμπί ανανέωσης στην μπάρα
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _loadTodayStats,
+          )
+        ], */
       ),
       // Drawer: Το πλαϊνό μενού που παρέχει πρόσβαση σε όλες τις λειτουργίες (ΠΧ1-ΠΧ4) + ΤΟ ΕΞΤΡΑ ΔΙΚΟ ΜΟΥ ΠΧ?.
       drawer: Drawer(
@@ -106,27 +151,30 @@ class MainHomeScreen extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.settings_suggest, color: Colors.blue.shade700),
               title: const Text('Διαχείριση Κατηγοριών', style: TextStyle(fontWeight: FontWeight.w500)),
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const CategoryListScreen()));
+                await Navigator.push(context, MaterialPageRoute(builder: (context) => const CategoryListScreen()));
+                _loadTodayStats(); // Ανανεώνει τα στατιστικά στην αρχική οθόνη μόλις επιστρέψουμε
               },
             ),
             // Επιλογή 3: Καταγραφή Εξόδου (ΠΧ2).
             ListTile(
               leading: Icon(Icons.add_shopping_cart, color: Colors.blue.shade700),
               title: const Text('Καταγραφή Εξόδου', style: TextStyle(fontWeight: FontWeight.w500)),
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const AddExpenseScreen()));
+                await Navigator.push(context, MaterialPageRoute(builder: (context) => const AddExpenseScreen()));
+                _loadTodayStats(); // Ανανεώνει τα στατιστικά στην αρχική οθόνη μόλις επιστρέψουμε
               },
             ),
             // Επιλογή 4: Επιθεώρηση Εξόδων (Φιλτράρισμα & Ιστορικό) (ΠΧ3).
             ListTile(
               leading: Icon(Icons.list_alt, color: Colors.blue.shade700),
               title: const Text('Επιθεώρηση Εξόδων', style: TextStyle(fontWeight: FontWeight.w500)),
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const ExpensesListScreen()));
+                await Navigator.push(context, MaterialPageRoute(builder: (context) => const ExpensesListScreen()));
+                _loadTodayStats(); // Ανανεώνει τα στατιστικά στην αρχική οθόνη μόλις επιστρέψουμε
               },
             ),
             // Επιλογή 5: Ανάλυση Εξόδων (Σύνολα ανά κατηγορία) (ΠΧ4).
@@ -142,19 +190,88 @@ class MainHomeScreen extends StatelessWidget {
         ),
       ),
       // Κεντρικό περιεχόμενο της αρχικής οθόνης.
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.account_balance_wallet, size: 80, color: Colors.blue),
-            const SizedBox(height: 20),
-            Text(
-              'Καλώς ήρθατε!',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      body: LayoutBuilder( // Χρησιμοποιούμε LayoutBuilder για να ξέρουμε το ύψος της οθόνης
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: IntrinsicHeight(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly, // μοιράζονται ωραία στο μέγεθος της οθόνης
+                  children: [
+
+                    // Welcome στοιχεία + καθοδήγηση
+                    Column(
+                      children: const [
+                        SizedBox(height: 20),
+                        Icon(Icons.account_balance_wallet, size: 80, color: Colors.blue),
+                        SizedBox(height: 20),
+                        Text(
+                          'Καλώς ήρθατε!',
+                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
+                        Text('Χρησιμοποιήστε το μενού για να ξεκινήσετε.'),
+                      ],
+                    ),
+
+                    // Στρόγγυλο quick button
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.blue.withOpacity(0.3),
+                                spreadRadius: 4,
+                                blurRadius: 10,
+                              ),
+                            ],
+                          ),
+                          child: IconButton(
+                            iconSize: 45,
+                            icon: const Icon(Icons.add, color: Colors.white),
+                            onPressed: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const AddExpenseScreen()),
+                              );
+                              _loadTodayStats();
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          "Γρήγορη Προσθήκη Εξόδου",
+                          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+
+                    // Ημερήσια κάρτα ανάλυσης
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                      child: Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          leading: const Icon(Icons.analytics_outlined, color: Colors.blue, size: 30),
+                          title: const Text('Σημερινά Έξοδα'),
+                          subtitle: Text(
+                            '€${_todayTotal.toStringAsFixed(2)}',
+                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            Text('Χρησιμοποιήστε το μενού για να ξεκινήσετε.'),
-          ],
-        ),
+          );
+        },
       ),
       // ΠΡΟΣΘΗΚΗ FOOTER:
       bottomNavigationBar: Container(
