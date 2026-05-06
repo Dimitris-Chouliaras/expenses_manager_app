@@ -144,19 +144,24 @@ class DatabaseHelper {
   // Ανάκτηση εξόδων με φίλτρα χρόνου (Σήμερα, Μήνας κλπ) χρησιμοποιώντας SQL συναρτήσεις ημερομηνίας.
   Future<List<Expense>> getFilteredExpenses(String filter) async {
     final db = await instance.database;
-    String where = ''; // Αρχικά κενό για την περίπτωση 'ΟΛΑ'
+    String whereClause= ''; // Αρχικά κενό για την περίπτωση 'ΟΛΑ'
 
     // Δημιουργούμε το WHERE clause προσθέτοντας τη λέξη WHERE στην αρχή
+    String today = DateTime.now().toIso8601String().split('T')[0];
+    String yesterday = DateTime.now().subtract(const Duration(days: 1)).toIso8601String().split('T')[0];
+
     if (filter == 'ΣΗΜΕΡΑ') {
-      where = "WHERE date(e.timestamp, 'localtime') = date('now', 'localtime')";
+      // Ψάχνουμε εγγραφές που το timestamp τους ξεκινάει με σήμερα
+      whereClause = "WHERE e.timestamp LIKE '$today%'";
     } else if (filter == 'ΧΘΕΣ') {
-      where = "WHERE date(e.timestamp, 'localtime') = date('now', 'localtime', '-1 day')";
+      whereClause = "WHERE e.timestamp LIKE '$yesterday%'";
     } else if (filter == 'ΕΒΔΟΜΑΔΑ') {
-      where = "WHERE date(e.timestamp, 'localtime') >= date('now', 'localtime', '-7 days')";
+      // Για την εβδομάδα και πίσω, χρησιμοποιούμε την κλασική σύγκριση
+      whereClause = "WHERE date(e.timestamp) >= date('now', '-7 days')";
     } else if (filter == 'ΜΗΝΑΣ') {
-      where = "WHERE date(e.timestamp, 'localtime') >= date('now', 'localtime', 'start of month')";
+      whereClause = "WHERE date(e.timestamp) >= date('now', 'start of month')";
     } else if (filter == 'ΧΡΟΝΟΣ') {
-      where = "WHERE date(e.timestamp, 'localtime') >= date('now', 'localtime', 'start of year')";
+      whereClause = "WHERE date(e.timestamp) >= date('now', 'start of year')";
     } // Αν είναι 'ΟΛΑ', το whereClause μένει null
 
     // Χρήση rawQuery για να συνδέσουμε τους δύο πίνακες (expenses και categories)
@@ -166,7 +171,7 @@ class DatabaseHelper {
     SELECT e.*, c.title as categoryName 
     FROM expenses e
     JOIN categories c ON e.category_id = c.id
-    $where
+    $whereClause
     ORDER BY e.timestamp DESC
   ''');
 

@@ -53,8 +53,10 @@ class _ExpensesListScreenState extends State<ExpensesListScreen> {
                     selectedColor: Colors.blue.shade100,
                     onSelected: (bool selected) {
                       if (selected) {
-                        setState(() => _selectedFilter = filter);
-                        _refreshExpenses(); // Επαναφόρτωση δεδομένων μόλις αλλάξει το φίλτρο.
+                        setState(() {_selectedFilter = filter;
+                          _expenses = []; // Προαιρετικό: καθαρισμός λίστας για οπτικό feedback
+                        });
+                        _refreshExpenses();
                       }
                     },
                   ),
